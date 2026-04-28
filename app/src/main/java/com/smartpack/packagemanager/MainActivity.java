@@ -1,0 +1,173 @@
+/*
+ * Copyright (C) 2021-2022 sunilpaulmathew <sunil.kde@gmail.com>
+ *
+ * This file is part of Package Manager, a simple, yet powerful application
+ * to manage other application installed on an android device.
+ *
+ */
+
+package com.smartpack.packagemanager;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.View;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.smartpack.packagemanager.activities.InstallerInstructionsActivity;
+import com.smartpack.packagemanager.fragments.ExportedAppsFragment;
+import com.smartpack.packagemanager.fragments.PackageTasksFragment;
+import com.smartpack.packagemanager.fragments.SettingsFragment;
+import com.smartpack.packagemanager.fragments.UninstalledAppsFragment;
+import com.smartpack.packagemanager.utils.tasks.MultipleAPKsTasks;
+import com.smartpack.packagemanager.utils.tasks.SingleAPKTasks;
+
+import java.util.Objects;
+
+import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
+import in.sunilpaulmathew.sCommon.CrashReporter.sCrashReporter;
+import in.sunilpaulmathew.sCommon.ThemeUtils.sThemeUtils;
+
+/*
+ * Created by sunilpaulmathew <sunil.kde@gmail.com> on February 11, 2020
+ */
+public class MainActivity extends AppCompatActivity {
+
+    private Fragment mFragment;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // Set App Language
+        sThemeUtils.setLanguage(this);
+        setContentView(R.layout.activity_main);
+
+        View mRootView = findViewById(R.id.layout_root);
+        View mLayoutContainer = findViewById(R.id.layout_container);
+        BottomNavigationView mBottomNav = findViewById(R.id.bottom_navigation);
+        FloatingActionButton mFAB = findViewById(R.id.fab);
+
+        ViewCompat.setOnApplyWindowInsetsListener(mRootView, (view, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+
+            view.setPadding(
+                    0,
+                    systemBars.top,
+                    0,
+                    0
+            );
+
+            return insets;
+        });
+
+        // Record crashes
+        sCrashReporter crashReporter = new sCrashReporter(this);
+        crashReporter.setAccentColor(Integer.MIN_VALUE);
+        crashReporter.setTitleSize(20);
+        crashReporter.initialize();
+
+        Menu menu = mBottomNav.getMenu();
+        menu.add(Menu.NONE, 0, Menu.NONE, null).setIcon(R.drawable.ic_apps);
+        menu.add(Menu.NONE, 1, Menu.NONE, null).setIcon(R.drawable.ic_apks);
+        menu.add(Menu.NONE, 2, Menu.NONE, null).setIcon(R.drawable.ic_delete);
+        menu.add(Menu.NONE, 3, Menu.NONE, null).setIcon(R.drawable.ic_settings);
+
+        mBottomNav.setOnItemSelectedListener(
+                menuItem -> {
+                    switch (menuItem.getItemId()) {
+                        case 0:
+                            mFragment = new PackageTasksFragment();
+                            break;
+                        case 1:
+                            mFragment = new ExportedAppsFragment();
+                            break;
+                        case 2:
+                            mFragment = new UninstalledAppsFragment();
+                            break;
+                        case 3:
+                            mFragment = new SettingsFragment();
+                            break;
+                    }
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                            mFragment).commit();
+                    return true;
+                }
+        );
+
+        mBottomNav.post(() -> mLayoutContainer.setPadding(0, 0, 0, mBottomNav.getHeight()));
+
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new PackageTasksFragment()).commit();
+        }
+
+        mFAB.setOnClickListener(v -> {
+            if (sCommonUtils.getBoolean("neverShow", false, this)) {
+                Intent installer = getInstallerIntent();
+                filePickerIntent.launch(installer);
+            } else {
+                Intent installer = new Intent(this, InstallerInstructionsActivity.class);
+                installApp.launch(installer);
+            }
+        });
+    }
+
+    @NonNull
+    private static Intent getInstallerIntent() {
+        Intent installer = new Intent(Intent.ACTION_GET_CONTENT);
+        installer.setType("*/*");
+        String[] mimeTypes = {
+                "application/vnd.android.package-archive",
+                "application/xapk-package-archive",
+                "application/octet-stream",
+                "application/vnd.apkm"
+        };
+        installer.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+        installer.addCategory(Intent.CATEGORY_OPENABLE);
+        installer.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        return installer;
+    }
+
+    private final ActivityResultLauncher<Intent> installApp = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                    Intent data = result.getData();
+                    boolean update = Objects.requireNonNull(data).getBooleanExtra("INSTALL_STATUS_UPDATE", false);
+
+                    if (!update) {
+                        recreate();
+                    }
+                }
+            }
+    );
+
+    private final ActivityResultLauncher<Intent> filePickerIntent = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                    Intent data = result.getData();
+                    Uri uriFile = data.getData();
+
+                    if (data.getClipData() != null) {
+                        new MultipleAPKsTasks(data.getClipData(), installApp, this).execute();
+                    } else if (uriFile != null) {
+                        new SingleAPKTasks(uriFile, installApp::launch, this).execute();
+                    }
+                }
+            }
+    );
+
+}

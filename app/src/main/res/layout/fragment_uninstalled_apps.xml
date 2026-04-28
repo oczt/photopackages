@@ -1,0 +1,92 @@
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent" >
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:orientation="vertical"
+        android:gravity="start" >
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top|center_vertical"
+                android:padding="5dp" >
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/uninstalled_apps"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="125dp"
+                    style="@style/AppTheme.Title" />
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center|end"
+                    android:layout_marginStart="125dp"
+                    android:orientation="horizontal"
+                    android:layout_marginEnd="5dp" >
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/search_icon"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        style="?attr/materialIconButtonFilledTonalStyle"
+                        app:iconTint="?attr/colorPrimary"
+                        app:icon="@drawable/ic_search" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/sort_icon"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        style="?attr/materialIconButtonFilledTonalStyle"
+                        app:iconTint="?attr/colorPrimary"
+                        app:icon="@drawable/ic_sort" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+            </FrameLayout>
+
+            <include layout="@layout/layout_search" />
+
+            <ProgressBar
+                android:id="@+id/progress"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:indeterminateTint="?attr/colorPrimary"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp"
+                android:layout_gravity="center"
+                android:indeterminate="true"
+                android:visibility="gone" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <include layout="@layout/layout_recyclerview" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/batch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="?attr/materialIconButtonFilledTonalStyle"
+        android:text="@string/restore_selected"
+        android:textColor="?attr/colorPrimary"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="50dp"
+        app:iconTint="?attr/colorPrimary"
+        android:layout_marginEnd="50dp"
+        app:icon="@drawable/ic_select"
+        android:visibility="gone"
+        android:textSize="17sp"
+        app:iconPadding="10sp" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,0 +1,24 @@
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent" >
+
+    <include layout="@layout/layout_recyclerview" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/batch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="?attr/materialIconButtonFilledTonalStyle"
+        android:textColor="?attr/colorPrimary"
+        android:text="@string/export_selected"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="50dp"
+        app:iconTint="?attr/colorPrimary"
+        android:layout_marginEnd="50dp"
+        app:icon="@drawable/ic_select"
+        android:visibility="gone"
+        android:textSize="17sp"
+        app:iconPadding="10sp" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,0 +1,14 @@
+<com.google.android.material.button.MaterialButton
+    android:id="@+id/icon"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    style="?attr/materialIconButtonFilledTonalStyle"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:backgroundTint="@android:color/transparent"
+    android:textColor="?attr/colorPrimary"
+    android:layout_gravity="center"
+    app:iconGravity="textTop"
+    android:gravity="center"
+    android:textSize="12sp"
+    app:iconSize="24sp" />

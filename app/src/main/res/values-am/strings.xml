@@ -1,0 +1,47 @@
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <!--Author: Mikesew1320 <mikesew1320@gmail.com>-->
+
+    <string name="app_info">የመተግበሪያ መረጃ</string>
+    <string name="batch_list_clear">ዝርዝሩን አፅዳ</string>
+    <string name="batch_warning">የቡድኑን መቼቶት ሊያጠፉ ነው! እርግጠኛ ኖት?</string>
+    <string name="disable_message">%s መጠቀም አይችሉም! እርግጠኛ ኖት?</string>
+    <string name="disabled">ጠፍቷል</string>
+    <string name="disabling">%s በማቋረጥ ላይ</string>
+    <string name="enabled">በርቷል</string>
+    <string name="enabling">%s በማብራት ላይ</string>
+    <string name="export">ገልብጥ</string>
+    <string name="export_bundle_summary">ሁሉም ክፍልፍል መተግበሪያ ወደ %s ተገልብጧል!</string>
+    <string name="exporting">%s በመገልበጥ ላይ</string>
+    <string name="exporting_bundle">%s ክፍልፍል መተግበሪያ በመገልበጥ ላይ</string>
+    <string name="got_it">ገብቶኛል</string>
+    <string name="install">ጫን</string>
+    <string name="installing_bundle">ክፍልፍል መተግበሪያ በመጫን ላይ</string>
+    <string name="language">ቋንቋ</string>
+    <string name="language_default">ነባር</string>
+    <string name="more_apps">ከ አበልፃጊዉ ተጨማሪ መተግበሪያ</string>
+    <string name="open">ክፈት</string>
+    <string name="open_message">ይህን መተግበሪያ በአሁኑ ሰዐት እየተጠቀሙበት ይገኛሉ!</string>
+    <string name="open_failed">%s በ ተጠቃሚ ማከማቻ ላይ ለመጠቀም ተብሎ አልተሰራም!</string>
+    <string name="permission_denied_write_storage">ማከማቻን የመጠቀም ፍቃድ አልተገኘም!</string>
+    <string name="playstore">ፕሌይስቶር</string>
+    <string name="press_back">ለመዉጣት ከፈለጉ የኋላ መመለሻ ቁልፉን ደግመዉ ይጫኑ።</string>
+    <string name="report_issue">ችግር ካለ ለመጠቆም</string>
+    <string name="share">አጋራ</string>
+    <string name="shared_by">%s/ በ ፖኬጅ ማኔጀር ተጋርቷል</string>
+    <string name="share_message">ፖኬጅ ማኔጀር %s ማዉረድ ከፈለጉ\ፕሌይስቶር: https://play.google.com/store/apps/details?id=com.smartpack.packagemanager</string>
+    <string name="share_with">በዚህ አጋራ</string>
+    <string name="support">የቴሌግራም ቤተሰብ</string>
+    <string name="sure_question">እርግጠኛ ኖት?</string>
+    <string name="turn_on_off">አብራ/አጥፋ</string>
+    <string name="uninstall">መተግበሪያውን ሰርዝ</string>
+    <string name="uninstall_nope">ይቅርታ! ይሄንን እዚህ ጋር ሆነዉ ማድረግ አይችሉም!</string>
+    <string name="uninstall_summary">%s በማስወገድ ላይ</string>
+    <string name="uninstall_title">እርግጠኛ ኖት %s መሰረዝ ይፈልጋሉ?</string>
+    <string name="uninstall_warning">ማሳሰቢያ! የሲስተም መተግበሪያዎችን መሰረዝ አንዳንድ ጊዜ ችግር ሊያስከትል ይችላል!
+
+        *** <b>ለሚፈጠረዉ ነገር ሀላፊነቱን ይዉሰዱ!</b>> ***
+    </string>
+    <string name="welcome_message">እንኳን ወደ ፖኬጅ ማኔጀር በደህና መጡ! በስልክዎ ላይ የተጫኑ መተግበሪያዎችን ለማስተዳደር የሚያገለግል ቀላል ግን ሀይለኛ መተግበሪያ!</string>
+    <string name="wrong_extension">እባክዎን %s አይነት ቅጥያ ያለዉ ፋይል ይምረጡ!</string>
+    <string name="yes">አዎ</string>
+</resources>

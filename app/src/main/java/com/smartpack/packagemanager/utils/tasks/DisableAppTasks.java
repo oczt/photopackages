@@ -1,0 +1,78 @@
+/*
+ * Copyright (C) 2021-2022 sunilpaulmathew <sunil.kde@gmail.com>
+ *
+ * This file is part of Package Manager, a simple, yet powerful application
+ * to manage other application installed on an android device.
+ *
+ */
+
+package com.smartpack.packagemanager.utils.tasks;
+
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Intent;
+
+import com.smartpack.packagemanager.R;
+import com.smartpack.packagemanager.dialogs.ProgressDialog;
+import com.smartpack.packagemanager.utils.RootShell;
+import com.smartpack.packagemanager.utils.ShizukuShell;
+import com.smartpack.packagemanager.utils.Utils;
+
+import in.sunilpaulmathew.sCommon.CommonUtils.sCommonUtils;
+import in.sunilpaulmathew.sCommon.CommonUtils.sExecutor;
+import in.sunilpaulmathew.sCommon.PackageUtils.sPackageUtils;
+
+/*
+ * Created by sunilpaulmathew <sunil.kde@gmail.com> on February 12, 2023
+ */
+public class DisableAppTasks extends sExecutor {
+
+    private final Activity mActivity;
+    private final String mAppName, mPackageName;
+    private static final RootShell mRootShell = new RootShell();
+    private static final ShizukuShell mShizukuShell = new ShizukuShell();
+    private static String mResult = null;
+    private ProgressDialog mProgressDialog;
+
+    public DisableAppTasks(String appName, String packageName, Activity activity) {
+        this.mAppName = appName;
+        this.mPackageName = packageName;
+        this.mActivity = activity;
+    }
+
+    @SuppressLint("StringFormatInvalid")
+    @Override
+    public void onPreExecute() {
+        mProgressDialog = new ProgressDialog(mActivity);
+        mProgressDialog.setIcon(R.mipmap.ic_launcher);
+        mProgressDialog.setTitle(sPackageUtils.isEnabled(mPackageName, mActivity) ?
+                mActivity.getString(R.string.disabling, mAppName) + "..." :
+                mActivity.getString(R.string.enabling, mAppName) + "...");
+        mProgressDialog.show();
+    }
+
+    @Override
+    public void doInBackground() {
+        sCommonUtils.sleep(1);
+        if (mRootShell.rootAccess()) {
+            mResult = mRootShell.runAndGetError((sPackageUtils.isEnabled(mPackageName, mActivity) ? "pm disable-user --user " : "pm enable --user ") + Utils.getUserID() + " " + mPackageName);
+        } else {
+            mResult = mShizukuShell.runAndGetOutput((sPackageUtils.isEnabled(mPackageName, mActivity) ? "pm disable-user --user " : "pm enable --user ") + Utils.getUserID() + " " + mPackageName);
+        }
+    }
+
+    @SuppressLint("StringFormatInvalid")
+    @Override
+    public void onPostExecute() {
+        mProgressDialog.dismiss();
+        if (mResult != null && (mResult.contains("new state: disabled") || mResult.contains("new state: enabled"))) {
+            Intent intent = new Intent();
+            intent.putExtra("packageNameDisabled", mPackageName);
+            mActivity.setResult(Activity.RESULT_OK, intent);
+            mActivity.finish();
+        } else {
+            sCommonUtils.snackBar(mActivity.findViewById(android.R.id.content), mActivity.getString(R.string.disable_failed_message, mAppName)).show();
+        }
+    }
+
+}
